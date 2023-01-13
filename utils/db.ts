@@ -1,21 +1,10 @@
 import { Sequelize } from "sequelize";
-import {DATABASE_URL} from "./config"
+import { DATABASE_URL } from "./config";
 import "dotenv/config";
-
 require("dotenv").config();
 
-const sequelize = new Sequelize(
-  process.env.DATABASE_URL!, // added ! to tell typescript that it's not undefined
-  {
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
-    logging: false,
-  }
-);
+const sequelize = new Sequelize(DATABASE_URL!, { logging: false }); 
+// added ! to tell typescript that it's not undefin
 
 const connectToDatabase = async () => {
   try {
@@ -30,5 +19,3 @@ const connectToDatabase = async () => {
 };
 
 export { sequelize, connectToDatabase };
-
-

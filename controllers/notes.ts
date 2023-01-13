@@ -13,7 +13,7 @@ type where = {
   content?: any;
 };
 
-notesRouter.get("/api/notes", async (request, response) => {
+notesRouter.get("/", async (request, response) => {
   const where: where = {};
 
   if (request.query.important) {
@@ -45,7 +45,7 @@ const tokenExtractor = (
 ) => {
   const authorization = req.get("authorization");
   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-    console.log(authorization);
+    console.log("authorization", authorization);
     try {
       req.decodedToken = jwt.verify(
         authorization.substring(7),
@@ -61,7 +61,7 @@ const tokenExtractor = (
 };
 
 notesRouter.post(
-  "/api/notes",
+  "/",
   tokenExtractor,
   async (req: tokenRequest, res: Response) => {
     try {
@@ -78,7 +78,7 @@ notesRouter.post(
   }
 );
 
-notesRouter.get("/api/notes/:id", async (request, response) => {
+notesRouter.get("/:id", async (request, response) => {
   const note = await Note.findByPk(request.params.id);
   // sequelize query that looks for primary key (id is the defined primary key in the note model)
   if (note) {
@@ -88,7 +88,7 @@ notesRouter.get("/api/notes/:id", async (request, response) => {
   }
 });
 
-notesRouter.delete("/api/notes/:id", async (request, response) => {
+notesRouter.delete("/:id", async (request, response) => {
   const note = await Note.findByPk(request.params.id);
   if (note) {
     await note.destroy();
@@ -96,7 +96,7 @@ notesRouter.delete("/api/notes/:id", async (request, response) => {
   response.status(204).end();
 });
 
-notesRouter.put("api/notes/:id", async (request, response) => {
+notesRouter.put("/:id", async (request, response) => {
   const note = await Note.findByPk(request.params.id);
   if (note) {
     note.important = request.body.important;

@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  if !user 
+    h1 welcome, stranger
+    hr
+  if user
+    h1 welcome back #{user.username} 
+
+  else 
+    form(method="POST" action="/api/users")
+      div.form-group
+        label(for="username") username:
+        input#username.form-control(type="text" name="username" required="true")
+      div.form-group
+        label(for="name") name:
+        input#name.form-control(type="text" name="name" required="true")
+      button.btn.btn-primary(type="submit") Sign Up
