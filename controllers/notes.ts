@@ -2,6 +2,7 @@ import { User, Note } from "../models";
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 import express, { Request, Response, NextFunction } from "express";
+const { SECRET } = require("../utils/config")
 const notesRouter = express.Router();
 
 export interface tokenRequest extends Request {
@@ -47,10 +48,7 @@ const tokenExtractor = (
   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
     console.log("authorization", authorization);
     try {
-      req.decodedToken = jwt.verify(
-        authorization.substring(7),
-        process.env.SECRET!
-      );
+      req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
     } catch {
       return res.status(401).json({ error: "token invalid" });
     }

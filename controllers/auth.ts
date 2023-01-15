@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { User } from "../models";
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { SECRET } = require("../utils/config");
 
 module.exports.register_get = (request: Request, response: Response) => {
   response.render("register");
@@ -22,6 +24,37 @@ module.exports.login_get = (request: Request, response: Response) => {
   response.render("login");
 };
 
-module.exports.login_post = (request: Request, response: Response) => {
-  response.send("user logged in");
+module.exports.login_post = async (request: Request, response: Response) => {
+  const { username, password } = request.body;
+  await User.findOne({
+    where: { username: username },
+  }).then(async (user) => {
+    if (!user) {
+      response
+        .status(401)
+        .json({ success: false, msg: "could not find user" });
+    }
+    if (user) {
+      await bcrypt.compare(password, user.password).then((result: any) => {
+        if (result) {
+          const token = jwt.sign(
+            {
+              username: user?.username,
+              id: user?.id,
+            },
+            SECRET
+          );
+          response.status(200).json({
+            success: true,
+            token: token,
+          });
+        } else {
+          console.log(password, user.password);
+          response
+            .status(401)
+            .json({ success: false, msg: "you entered the wrong password" });
+        }
+      });
+    }
+  });
 };

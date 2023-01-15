@@ -4,7 +4,7 @@ import "dotenv/config";
 require("dotenv").config();
 
 const sequelize = new Sequelize(DATABASE_URL!, { logging: false }); 
-// added ! to tell typescript that it's not undefin
+// added ! to tell typescript that it's not undefined
 
 const connectToDatabase = async () => {
   try {
@@ -14,7 +14,6 @@ const connectToDatabase = async () => {
     console.log("connecting database failed");
     return process.exit(1);
   }
-
   return null;
 };
 

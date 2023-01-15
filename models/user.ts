@@ -6,7 +6,9 @@ class User extends Model {}
 interface User {
   id: number;
   username: string;
-  name: string;
+  password: string;
+  admin: boolean,
+  disabled: boolean
 }
 
 User.init(
@@ -24,6 +26,14 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   {
