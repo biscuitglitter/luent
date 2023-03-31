@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express, { Request, Response, NextFunction, Application, RequestHandler} from "express";
+import express, { Application, RequestHandler} from "express";
 import { PORT } from "./utils/config";
 import { connectToDatabase } from "./utils/db";
 import cors from "cors";
@@ -9,7 +9,7 @@ import { notesRouter } from "./controllers/notes";
 import { authRouter } from "./routes/authRoutes";
 import { usersRouter } from "./controllers/users";
 
-app.use(express.json() as RequestHandler); //For JSON requests
+app.use(express.json() as RequestHandler); // For JSON requests
 app.use(express.urlencoded({ extended: true }) as RequestHandler);
 
 app.use(cors({}));
